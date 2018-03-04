@@ -1,0 +1,307 @@
+---
+title: "DATA_605_Assignment_5_DThonn"
+file: DThonn_Assign5_DATA_605
+name: Daniel Thonn
+output:
+  html_document: default
+  pdf_document: default
+course: DATA 605 CUNY MSDA program
+---
+
+** DATA_605_Assignment_5_DThonn - Probability Distributions **
+
+http://rpubs.com/danthonn/366413
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+``````{r, echo=TRUE}
+#install.packages("") -- as needed
+
+```
+
+** Problem Homework 5 **
+
+Choose independently two numbers B and C at random from the interval [0, 1] with uniform density. Prove that B and C are proper probability distributions. Note that the point (B,C) is then chosen at random in the unit square. Find the probability that:
+
+Approach:
+1). Obtain combined distribution of B & C in each section.
+2). Integrated the area under the combined distribution for desired range to get the combined probability for that range.  
+See Example 2.14 in Textbook (Introduction to Probability,Grinstead,Snell)
+
+** (A) B + C < 1/2 **
+
+Sum = S = B + C
+
+First, obtain the cumulative distribution function and density function of S.
+
+And the sample space unit square of R^2.
+
+And Plot the probability distribution and density using a histogram.
+
+
+
+``````{r, echo=TRUE}
+
+# Create a set of random numbers between 0 to 1 for B and C
+B <- runif(1000, min = 0, max = 1)
+C <- runif(1000, min = 0, max = 1)
+
+# S = B + C
+S <- B + C
+
+```
+
+
+``````{r, echo=TRUE}
+
+# Plot the histogram
+hist(S,
+     main = "Histogram Distribution S",
+     xlab = "S",
+     border = "blue",
+     col = "blue",
+     xlim=c(0,3),
+     ylim=c(0,1.5),
+     las = 1,
+     breaks = 10,
+     probability = TRUE)
+
+
+# Add the density function curve with lines
+abline(0,1)
+abline(2,-1)
+
+```
+
+Then, Obtain the continuous distribution function, by taking the integral of the density function.
+
+Then obtain the probability of B + C < 1/2
+
+``````{r, echo=TRUE}
+
+# integrate the density function 
+integration1 <- function(x){x}
+
+probability1 <- integrate(integration1, lower = 0, upper = 1/2)
+# probability B + C < 1/2:
+probability1
+
+```
+
+** (B) BC < 1/2 **
+
+``````{r, echo=TRUE}
+# Create a set of random numbers between 0 to 1 for B and C
+B2 <- runif(1000, min = 0, max = 1)
+C2 <- runif(1000, min = 0, max = 1)
+
+# S2
+S2 <- B2 * C2
+
+```
+
+
+
+``````{r, echo=TRUE}
+
+# Plot the histogram
+hist2 <- hist(S2,
+     main = "Histogram Distribution S2",
+     xlab = "S2",
+     border = "blue",
+     col = "yellow",
+     xlim=c(0,1.2),
+     las = 1,
+     breaks = 10,
+     probability = TRUE)
+
+# Add density curve to the histogram
+lines(density(S2))
+
+```
+
+
+
+``````{r, echo=TRUE}
+
+# Add the first five bins (< .5) to get area. This is probability of B * C < 1/2
+# height x width
+probability2 <- sum(hist2$density[1:5]*.1)
+
+# probability of BC < 1/2
+probability2
+
+# [1] 0.841
+
+
+
+```
+
+
+
+** (C) |B - C| < 1/2 **
+
+
+``````{r, echo=TRUE}
+# Create a set of random numbers between 0 to 1 for B and C
+B3 <- runif(1000, min = 0, max = 1)
+C3 <- runif(1000, min = 0, max = 1)
+
+# S3
+S3 <- abs(B3 - C3)
+
+
+
+
+```
+
+
+
+``````{r, echo=TRUE}
+
+# Historgram plot
+hist3 <- hist(S3,
+     main = "Histogram Distribution S3",
+     xlab = "S3",
+     border = "blue",
+     col = "red",
+     xlim=c(-.2,1.2),
+     las = 1,
+     breaks = 10,
+     probability = TRUE)
+
+# Add a density function line to fit
+abline(2,-2)
+
+
+```
+
+Integrate the function obtained above.
+
+``````{r, echo=TRUE}
+# integrate the density function
+integration3 <- function(x){2-2*x}
+
+# Obtain the probability of |B - C| < 1/2
+probability3 <- integrate(integration3, lower = 0, upper = 0.5)
+
+# Probability of |B - C| < 1/2
+probability3
+#0.75 with absolute error < 8.3e-15
+
+```
+
+
+** (D) max{B,C} < 1/2 **
+
+``````{r, echo=TRUE}
+
+# Create a set of random numbers between 0 to 1 for B and C
+B4 <- runif(1000, min = 0, max = 1)
+C4 <- runif(1000, min = 0, max = 1)
+
+# S4
+S4 <- pmax(B4, C4)
+
+```
+
+
+``````{r, echo=TRUE}
+
+# Creating a histogram S4
+hist4 <- hist(S4,
+     main = "Histogram Distribution S4",
+     xlab = "S4",
+     border = "blue",
+     col = "blue",
+     xlim=c(-.2,1.2),
+     ylim=c(0, 2),
+     las = 1,
+     breaks = 10,
+     probability = TRUE)
+
+# Add a density function to fit
+abline(0,2)
+
+```
+
+Integrate the function obtained above.
+
+``````{r, echo=TRUE}
+
+# integrate the density function
+integration4 <- function(x){2*x}
+
+# Obtain the probability of max{B,C} < 1/2
+probability4 <- integrate(integration4, lower = 0, upper = 0.5)
+
+# probability of max{B,C} < 1/2
+probability4
+
+```
+
+** (E) min{B,C} < 1/2 **
+
+``````{r, echo=TRUE}
+# Create a set of random numbers between 0 to 1 for B and C
+B5 <- runif(1000, min = 0, max = 1)
+C5 <- runif(1000, min = 0, max = 1)
+
+# S4
+S5 <- pmin(B5, C5)
+
+```
+
+
+``````{r, echo=TRUE}
+
+# Creating a histogram for Z5
+hist5 <- hist(S5,
+     main = "Histogram Distribution S5",
+     xlab = "S5",
+     border = "blue",
+     col = "yellow",
+     xlim=c(-.2,1.2),
+     ylim=c(0,2),
+     las = 1,
+     breaks = 10,
+     probability = TRUE)
+
+# Add a density function to fit
+abline(2,-2)
+
+
+```
+
+
+Integrate the function obtained above.
+
+``````{r, echo=TRUE}
+
+# integrate the density function
+integration5 <- function(x){2-2*x}
+
+# Obtain the probability of min{B,C} < 1/2
+probability5 <- integrate(integration5, lower = 0, upper = 0.5)
+
+# probability of min{B,C} < 1/2
+probability5
+
+# 0.75 with absolute error < 8.3e-15
+
+
+
+
+```
+
+
+**END**
+
+
+``````{r, echo=TRUE}
+
+```
+
+
